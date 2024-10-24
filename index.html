@@ -136,29 +136,18 @@
   <h2>Your Habits</h2>
   <ul id="habit-list">
     <div class="habit-details">
-      <!-- <strong>${habit.name}</strong><br>
-      <span class="streak">Streak: ${habit.streak}</span>
-    </div>
-    <button onclick="markHabit(${habit.id})">
-      ${habit.lastChecked === currentDate ? 'Completed Today' : 'Mark as Done'}
-    </button> -->
+      <!-- <li>
+      <div class="habit-details">
+        <strong>${habit.name}</strong><br>
+        <span class="streak">Streak: ${habit.streak}</span>
+      </div>
+      <button onclick="markHabit(${habit.id})">
+        ${habit.lastChecked === currentDate ? 'Completed Today' : 'Mark as Done'}
+      </button>
+    </li> -->
   </ul>
 
   <script>
-    const habitForm = document.getElementById("habit-form"), habitInput = document.getElementById("habit-input"), habitList = document.getElementById("habit-list"); let habits = JSON.parse(localStorage.getItem("habits")) || []; const currentDate = new Date().toLocaleDateString(); function renderHabits(t) {
-      habitList.innerHTML = "", t.forEach(t => {
-        let e = document.createElement("li"); e.innerHTML = `
-      <div class="habit-details">
-        <strong>${t.name}</strong><br>
-        <span class="streak">Streak: ${t.streak}</span>
-      </div>
-      <button onclick="markHabit(${t.id})">
-        ${t.lastChecked === currentDate ? "Completed Today" : "Mark as Done"}
-      </button>
-    `, t.lastChecked === currentDate && e.classList.add("completed"), habitList.appendChild(e)
-      })
-    } function markHabit(t) { habits = habits.map(e => { if (e.id === t) { if (e.lastChecked === currentDate) alert("You already marked this habit as done today."); else { let a = new Date; a.setDate(a.getDate() - 1); let i = a.toLocaleDateString(); e.lastChecked === i ? e.streak += 1 : e.streak = 1, e.lastChecked = currentDate } } return e }), localStorage.setItem("habits", JSON.stringify(habits)), renderHabits(habits) } renderHabits(habits), habitForm.addEventListener("submit", function (t) { t.preventDefault(); let e = { name: habitInput.value, streak: 0, lastChecked: null, id: Date.now() }; habits.push(e), localStorage.setItem("habits", JSON.stringify(habits)), habitInput.value = "", renderHabits(habits) });
-
   </script>
 </body>
 
