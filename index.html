@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habit Tracker with Streak Counter</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #121212;
+      /* Dark background */
+      color: #f1f1f1;
+      /* Light text color */
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1,
+    h2 {
+      color: #f8c146;
+      /* Gold color for headers */
+      font-weight: bold;
+    }
+
+    #habit-form input,
+    #habit-form button {
+      background-color: #1e1e1e;
+      /* Darker input background */
+      color: #f1f1f1;
+      /* White text color */
+      border: 2px solid #f8c146;
+      /* Gold border */
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    #habit-form button {
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #habit-form button:hover {
+      background-color: #f8c146;
+      /* Gold hover effect */
+      color: #121212;
+      /* Switch text to dark */
+    }
+
+    #habit-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1e1e1e;
+      border: 2px solid #f8c146;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    #habit-list li:hover {
+      background-color: #f8c146;
+      color: #121212;
+      transform: translateY(-2px);
+      /* Small hover lift */
+    }
+
+    .habit-details {
+      display: inline-block;
+    }
+
+    .streak {
+      color: #f8c146;
+      /* Gold color for streaks */
+      font-size: 14px;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+
+    button {
+      background-color: #f8c146;
+      border: none;
+      color: #121212;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    button:hover {
+      background-color: #121212;
+      color: #f8c146;
+      /* Reverse colors on hover */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      #habit-form input {
+        margin-bottom: 10px;
+        width: 100%;
+      }
+
+      #habit-form button {
+        width: 100%;
+      }
+
+      #habit-list li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .habit-details {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Habit Tracker</h1>
+
+  <!-- Habit Input Form -->
+  <form id="habit-form">
+    <input type="text" id="habit-input" placeholder="Enter a habit..." required>
+    <button type="submit">Add Habit</button>
+  </form>
+
+  <!-- Habit List -->
+  <h2>Your Habits</h2>
+  <ul id="habit-list">
+    <div class="habit-details">
+      <!-- <strong>${habit.name}</strong><br>
+      <span class="streak">Streak: ${habit.streak}</span>
+    </div>
+    <button onclick="markHabit(${habit.id})">
+      ${habit.lastChecked === currentDate ? 'Completed Today' : 'Mark as Done'}
+    </button> -->
+  </ul>
+
+  <script>
+    const habitForm = document.getElementById("habit-form"), habitInput = document.getElementById("habit-input"), habitList = document.getElementById("habit-list"); let habits = JSON.parse(localStorage.getItem("habits")) || []; const currentDate = new Date().toLocaleDateString(); function renderHabits(t) {
+      habitList.innerHTML = "", t.forEach(t => {
+        let e = document.createElement("li"); e.innerHTML = `
+      <div class="habit-details">
+        <strong>${t.name}</strong><br>
+        <span class="streak">Streak: ${t.streak}</span>
+      </div>
+      <button onclick="markHabit(${t.id})">
+        ${t.lastChecked === currentDate ? "Completed Today" : "Mark as Done"}
+      </button>
+    `, t.lastChecked === currentDate && e.classList.add("completed"), habitList.appendChild(e)
+      })
+    } function markHabit(t) { habits = habits.map(e => { if (e.id === t) { if (e.lastChecked === currentDate) alert("You already marked this habit as done today."); else { let a = new Date; a.setDate(a.getDate() - 1); let i = a.toLocaleDateString(); e.lastChecked === i ? e.streak += 1 : e.streak = 1, e.lastChecked = currentDate } } return e }), localStorage.setItem("habits", JSON.stringify(habits)), renderHabits(habits) } renderHabits(habits), habitForm.addEventListener("submit", function (t) { t.preventDefault(); let e = { name: habitInput.value, streak: 0, lastChecked: null, id: Date.now() }; habits.push(e), localStorage.setItem("habits", JSON.stringify(habits)), habitInput.value = "", renderHabits(habits) });
+
+  </script>
+</body>
+
+</html>
